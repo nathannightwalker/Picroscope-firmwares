@@ -1,0 +1,80 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/include",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/src",
+                "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/DHT sensor library",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit Unified Sensor",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit Motor Shield V2 Library",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit Motor Shield V2 Library/utility",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit BusIO",
+                "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/Users/nathan/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/Users/nathan/.platformio/packages/framework-arduino-avr/variants/standard",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/AccelStepper/src",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit GFX Library",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit ILI9341",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit SSD1306",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit STMPE610",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit TouchScreen",
+                "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Servo/src",
+                "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/include",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/src",
+                    "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/DHT sensor library",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit Unified Sensor",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit Motor Shield V2 Library",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit Motor Shield V2 Library/utility",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit BusIO",
+                    "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "/Users/nathan/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/Users/nathan/.platformio/packages/framework-arduino-avr/variants/standard",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/AccelStepper/src",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit GFX Library",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit ILI9341",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit SSD1306",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit STMPE610",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Adafruit TouchScreen",
+                    "/Users/nathan/Desktop/braingeneersCode/Picroscope-firmwares/Motor-Stuff/Motor-Control+GFP/.pio/libdeps/uno/Servo/src",
+                    "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/Users/nathan/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=50205",
+                "ARDUINO_AVR_UNO",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega328P__",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/Users/nathan/.platformio/packages/toolchain-atmelavr/bin/avr-gcc",
+            "compilerArgs": [
+                "-mmcu=atmega328p",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
