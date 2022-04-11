@@ -459,24 +459,24 @@ void loop() {
                                                 //take step toward correct position
                                                 myMotor1->onestep(FORWARD, INTERLEAVE);
                                                 //make way in encoder position to account for correction
-                                                count -= 4;
+                                                curMotorPosition += int(check1 - curMotorPosition);
 
                                         }else if(check1 - curMotorPosition <= -3){
 
                                                 myMotor1->onestep(BACKWARD, INTERLEAVE);
-                                                count += 4;
+                                                curMotorPosition += int(check1 - curMotorPosition);
 
                                         }
 
                                         if(check2 - curMotorPosition >= 3){
                                                 
                                                 myMotor2->onestep(FORWARD, INTERLEAVE);
-                                                count2 -= 4;
+                                                curMotorPosition += int(check1 - curMotorPosition);
 
                                         }else if(check2 - curMotorPosition <= -3){
 
                                                 myMotor2->onestep(BACKWARD, INTERLEAVE);
-                                                count2 += 4;
+                                                curMotorPosition += int(check1 - curMotorPosition);
 
                                         }
 
@@ -503,24 +503,24 @@ void loop() {
                                         //take step toward correct position
                                         myMotor1->onestep(FORWARD, INTERLEAVE);
                                         //make way in encoder position to account for correction
-                                        count -= 4;
+                                        curMotorPosition += int(check1 - curMotorPosition);
 
                                 }else if(check1 - curMotorPosition <= -3){
 
                                         myMotor1->onestep(BACKWARD, INTERLEAVE);
-                                        count += 4;
+                                        curMotorPosition += int(check1 - curMotorPosition);
 
                                 }
 
                                 if(check2 - curMotorPosition >= 3){
                                                 
                                         myMotor2->onestep(FORWARD, INTERLEAVE);
-                                        count2 -= 4;
+                                        curMotorPosition += int(check1 - curMotorPosition);
 
                                 }else if(check2 - curMotorPosition <= -3){
 
                                         myMotor2->onestep(BACKWARD, INTERLEAVE);
-                                        count2 += 4;
+                                        curMotorPosition += int(check1 - curMotorPosition);
 
                                 }
 
