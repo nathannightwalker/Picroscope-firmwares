@@ -455,25 +455,25 @@ void loop() {
                                         double check2 = count2 / 3;
 
                                         //correcting current position
-                                        if(count - curMotorPosition >= 3){
+                                        if(check1 - curMotorPosition >= 3){
                                                 //take step toward correct position
                                                 myMotor1->onestep(FORWARD, INTERLEAVE);
                                                 //make way in encoder position to account for correction
                                                 count -= 4;
 
-                                        }else if(count - curMotorPosition <= -3){
+                                        }else if(check1 - curMotorPosition <= -3){
 
                                                 myMotor1->onestep(BACKWARD, INTERLEAVE);
                                                 count += 4;
 
                                         }
 
-                                        if(count2 - curMotorPosition >= 3){
+                                        if(check2 - curMotorPosition >= 3){
                                                 
                                                 myMotor2->onestep(FORWARD, INTERLEAVE);
                                                 count2 -= 4;
 
-                                        }else if(count2 - curMotorPosition <= -3){
+                                        }else if(check2 - curMotorPosition <= -3){
 
                                                 myMotor2->onestep(BACKWARD, INTERLEAVE);
                                                 count2 += 4;
@@ -499,25 +499,25 @@ void loop() {
                                 double check2 = count2 / 3;
 
                                 //correcting current position
-                                if(count - curMotorPosition >= 3){
+                                if(check1 - curMotorPosition >= 3){
                                         //take step toward correct position
                                         myMotor1->onestep(FORWARD, INTERLEAVE);
                                         //make way in encoder position to account for correction
                                         count -= 4;
 
-                                }else if(count - curMotorPosition <= -3){
+                                }else if(check1 - curMotorPosition <= -3){
 
                                         myMotor1->onestep(BACKWARD, INTERLEAVE);
                                         count += 4;
 
                                 }
 
-                                if(count2 - curMotorPosition >= 3){
+                                if(check2 - curMotorPosition >= 3){
                                                 
                                         myMotor2->onestep(FORWARD, INTERLEAVE);
                                         count2 -= 4;
 
-                                }else if(count2 - curMotorPosition <= -3){
+                                }else if(check2 - curMotorPosition <= -3){
 
                                         myMotor2->onestep(BACKWARD, INTERLEAVE);
                                         count2 += 4;
