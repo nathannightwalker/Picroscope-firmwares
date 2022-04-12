@@ -1,14 +1,5 @@
-
-
-
-
-
-
-
 /*
    This code is for running the stepper motors and GFP blue_light board for the Braingeneers PiCroscope Project
-
-
  */
 
 //#define DEBUG
@@ -176,8 +167,6 @@ void encoder_setup(){
 void return_to_start_step();
 
 
-
-
 void setup() {
         Serial.begin(115200);     // set up Serial library at 9600 bps
         //Serial.println("starting: ");
@@ -230,6 +219,8 @@ unsigned long speed_timer = 0;
 bool speed_timer_flag = false;
 
 void move_motor_to_position_with_feedback();
+void shut_down_everything();
+void lights_off();
 
 void loop() {
 
@@ -245,34 +236,61 @@ void loop() {
                         highest_temp = t;
                 }
                 if (t > trigger_temp && !isnan(t)) {
-                        catastrophe = true;
-              #ifdef ACTIVE_LOW
-                        digitalWrite(SAFE_SWITCH_PIN, HIGH);
-              #else
-                        digitalWrite(SAFE_SWITCH_PIN, LOW);
-                        digitalWrite(MOTOR_SAFETY_PIN, LOW);
-                        digitalWrite(BLUE_LED_PIN, LOW);
-                        digitalWrite(WHITE_LED_PIN, LOW);
-              #endif
+                    shut_down_everything();
                 }
         }
         //motor running too long
         else if (abs(millis() - motor_timer) > 25000 && (return_flag == true || stepsToTake != 0 || xStepsToTake != 0 || yStepsToTake !=0)) {
-                catastrophe = true;
-          #ifdef ACTIVE_LOW
-                digitalWrite(SAFE_SWITCH_PIN, HIGH);
-          #else
-                digitalWrite(SAFE_SWITCH_PIN, LOW);
-                digitalWrite(MOTOR_SAFETY_PIN, LOW);
-                digitalWrite(BLUE_LED_PIN, LOW);
-                digitalWrite(WHITE_LED_PIN, LOW);
-          #endif
+            shut_down_everything();
         }
+
+        if((count2 - count > 8) || (count2 - count < -8)){
+
+                boolean M1Correct = false;
+
+                int PosToEncoderSteps = curMotorPosition * 3;
+
+                //check accuracy of encoder reading to recorded steps
+                int check1 = PosToEncoderSteps - count;
+                int check2 = PosToEncoderSteps - count2;
+
+                if(abs(check1) < abs(check2)){
+
+                        M1Correct = true;
+
+                }
+
+                if(M1Correct){ //if motor1 is closer to correct position
+
+                        if(check2 < check1){
+
+                                myMotor2->onestep(FORWARD, INTERLEAVE);
+
+                        }else{
+
+                                myMotor2->onestep(BACKWARD, INTERLEAVE);
+
+                        }
+
+                }else{
+
+                        if(check1 < check2){
+
+                                myMotor1->onestep(FORWARD, INTERLEAVE);
+
+                        }else{
+
+                                myMotor1->onestep(BACKWARD, INTERLEAVE);
+
+                        }
+
+                }
+
+        }
+
         //Serial.println("running: ");
         if (Serial.available() >= 2) {
                 a = Serial.read();
-                //for fast GFP blue_light response act here to avoid processing delays
-
                 b = Serial.read();
                 val = Serial.parseInt();
                 //    //flush
@@ -285,14 +303,12 @@ void loop() {
 #endif
         }
         switch(a){
-          // Serial.print("switch zero: ");Serial.print(read_switch(0));
-          // Serial.print(" switch one: "); Serial.print(read_switch(1)); Serial.println();
-          // delay(500);
+
           case 'e':
-          //report encoder data
+          //report encoder data or take encoder based feedback steps
                   switch(val){
                       case 1:
-                      //report
+                      //report encoder positions
                         Serial.print("Motor A: ");
                         Serial.println(safeMotorEncoderPositionA);
                         Serial.print("Motor B: ");
@@ -308,42 +324,41 @@ void loop() {
                         break;
 
                       default:
+                        //set number of steps to take in encoder based feedback control
                         count = 0;
                         count2 = 0;
                         safeMotorEncoderPositionA = 0;
                         safeMotorEncoderPositionB = 0;
+                        //encoder steps to take is acted on outside this state machine
                         encoderStepsToTake = val;
                   }
                   break;
 
           case 'c' :
-          //Calibration case
+          //set zero point without limit switch based reset.
+          //deprecated, unlikely to ever be used in practice
                   curMotorPosition = 0;
                   newMotorPosition = 0;
-                  EEPROM.update(address, 0);
                   break;
 
           case 'r' :
           //return to origin based on limit switch
                   motor_timer = millis();
                   return_flag = true;
-                  //return_to_start();
                   curMotorPosition = 0; //uncommented this to make ERROR condition work properly in return_to_start_step()
                   //newMotorPosition = 0;
-                  //EEPROM.update(address, 0);
                   a = 'n';
                   break;
           case 'm' :
           //set new motor position
                   //    if ((val > -1000) && (val < 1000)) safety
                   #ifdef DEBUG
+                  //measure motor speed in debug mode
                   speed_timer = millis();
                   speed_timer_flag = true;
                   #endif
                   newMotorPosition = val;
                   motor_timer = millis();
-                  //save the new motor position into EEPROM
-                  //EEPROM.update(address, val);
                   break;
           case 'x' :
           //move x axis motors on XY stage
@@ -362,7 +377,7 @@ void loop() {
           case 'l' :
           //control lights
                   if (val == 0) {
-                          //analogWrite(ledPin, val);
+                  //turn all lights off
                           #ifdef ACTIVE_LOW
                           digitalWrite(BLUE_LED_PIN, HIGH);
                           digitalWrite(WHITE_LED_PIN, HIGH);
@@ -370,9 +385,8 @@ void loop() {
                           digitalWrite(BLUE_LED_PIN, LOW);
                           digitalWrite(WHITE_LED_PIN, LOW);
                           #endif
-                          //blue_light->setSpeed(val);
-                          //blue_light->run(FORWARD);
                   }
+                  //otherwise turn one of the two lights on
                   #ifdef ACTIVE_LOW
                   if ( val == 1)
                           digitalWrite(BLUE_LED_PIN, LOW);
@@ -416,22 +430,33 @@ void loop() {
                   trigger_temp = val;
                   a = 'n';
                   break;
-          case 'p' : //pin toggle
+
+          case 'p' :
+          // toggle the state of any pin, useful for debugging hardware
                   digitalWrite(val, !digitalRead(val));
                   a = 'n';
                   break;
-          //clear command
         }
+
+        //clear unprocessed command
         a='n';
 
+        //We are now outside of the serial command response logic
+        //taking action of the flags set above in a non blocking fashion
         if(return_flag) {
+                //if the return flag is high then we will take single steps back
+                //towards our limit switch paddle until we reach it
                 return_to_start_step();
         }
         else if(encoderStepsToTake != 0){
+                //single step encoder feedback control
+                //not running if in return mode
+                //should investigate what happens if we dont use that else
                 move_motor_to_position_with_feedback();
         }
         else{
                 //Elevator Motors
+                //Move motors based on values defined in serial
                 stepsToTake = newMotorPosition - curMotorPosition;
                 //encoderStepsToTake = stepsToTake * 1.5;
 
@@ -440,48 +465,6 @@ void loop() {
                                 myMotor1->onestep(FORWARD, INTERLEAVE);
                                 myMotor2->onestep(FORWARD, INTERLEAVE);
                                 curMotorPosition++;
-
-                                //Here is where I think we should add feedback as it seems encoderstepstotake
-                                //is not really used as much as this one
-                                //Also when newpos - curpos = 0 it means movement is done
-                                //we should check position after movement is done
-                                //problem I noticed with this method: Only corrects position by one step
-                                //lmk @Pierre
-
-                                if(newMotorPosition - curMotorPosition == 0){
-
-                                        //count should be three times the position iirc
-                                        double check1 = count / 3;
-                                        double check2 = count2 / 3;
-
-                                        //correcting current position
-                                        if(check1 - curMotorPosition >= 3){
-                                                //take step toward correct position
-                                                myMotor1->onestep(FORWARD, INTERLEAVE);
-                                                //make way in encoder position to account for correction
-                                                curMotorPosition += int(check1 - curMotorPosition);
-
-                                        }else if(check1 - curMotorPosition <= -3){
-
-                                                myMotor1->onestep(BACKWARD, INTERLEAVE);
-                                                curMotorPosition += int(check1 - curMotorPosition);
-
-                                        }
-
-                                        if(check2 - curMotorPosition >= 3){
-                                                
-                                                myMotor2->onestep(FORWARD, INTERLEAVE);
-                                                curMotorPosition += int(check1 - curMotorPosition);
-
-                                        }else if(check2 - curMotorPosition <= -3){
-
-                                                myMotor2->onestep(BACKWARD, INTERLEAVE);
-                                                curMotorPosition += int(check1 - curMotorPosition);
-
-                                        }
-
-                                }
-
                         }else{
                                 newMotorPosition = curMotorPosition;
                                 stepsToTake = 0;
@@ -491,41 +474,6 @@ void loop() {
                         myMotor1->onestep(BACKWARD, INTERLEAVE);
                         myMotor2->onestep(BACKWARD, INTERLEAVE);
                         curMotorPosition--;
-
-                        if(newMotorPosition - curMotorPosition == 0){
-
-                                //count should be three times the position iirc
-                                double check1 = count / 3;
-                                double check2 = count2 / 3;
-
-                                //correcting current position
-                                if(check1 - curMotorPosition >= 3){
-                                        //take step toward correct position
-                                        myMotor1->onestep(FORWARD, INTERLEAVE);
-                                        //make way in encoder position to account for correction
-                                        curMotorPosition += int(check1 - curMotorPosition);
-
-                                }else if(check1 - curMotorPosition <= -3){
-
-                                        myMotor1->onestep(BACKWARD, INTERLEAVE);
-                                        curMotorPosition += int(check1 - curMotorPosition);
-
-                                }
-
-                                if(check2 - curMotorPosition >= 3){
-                                                
-                                        myMotor2->onestep(FORWARD, INTERLEAVE);
-                                        curMotorPosition += int(check1 - curMotorPosition);
-
-                                }else if(check2 - curMotorPosition <= -3){
-
-                                        myMotor2->onestep(BACKWARD, INTERLEAVE);
-                                        curMotorPosition += int(check1 - curMotorPosition);
-
-                                }
-
-                        }
-
                 }
                 else {
                         #ifdef DEBUG
@@ -569,6 +517,7 @@ void loop() {
 
 void move_motor_to_position_with_feedback(){
 //must confirm which encoder reads which motor
+//otherwise you end up with one turning forever
   if ( encoderStepsToTake > 0){
       if ( safeMotorEncoderPositionA < encoderStepsToTake) {
           if(read_switch(1)==1) {//stop collision with cell plate
@@ -616,7 +565,7 @@ void move_motor_to_position_with_feedback(){
 }
 
 void return_to_start_step(){
-        //this is a mess to make the motor control non-blocking, must make into a state machine at a later date
+        //non blocking state machine to bring elevator down to where limit switch collides and then back up until it's free
         enum state {DOWN, UP, EXIT, ERROR};
         static int state = DOWN;
         switch (state)
@@ -670,36 +619,48 @@ void return_to_start_step(){
         // }
 }
 
+/*
+shut_down_everything initiates catastrophe mode
+turns off all relays and sets global catastrophe flag to true
+*/
+void shut_down_everything(){
+  catastrophe = true;
+#ifdef ACTIVE_LOW
+  digitalWrite(SAFE_SWITCH_PIN, HIGH);
+#else
+  digitalWrite(SAFE_SWITCH_PIN, LOW);
+  digitalWrite(MOTOR_SAFETY_PIN, LOW);
+  digitalWrite(BLUE_LED_PIN, LOW);
+  digitalWrite(WHITE_LED_PIN, LOW);
+#endif
+
+}
+
+
+/*
+Interrupt Service Routine for counting steps from the motor encoders
+A little bit inscrutable, but it's short and it works
+*/
 ISR(PCINT0_vect) {
-
   //Serial.println(PINB);
-
   uint8_t b = readB;
 
   if(stateB != b){
-
     if (readA == b) {
       count ++;
       } else {
       count --;
     }
-
     stateB = b;
-
   }
-
   uint8_t c = readC;
-
   if(stateC != c){
-
     if (readD == c) {
       count2 ++;
     }
     else {
       count2 --;
     }
-
     stateC = c;
-
   }
 }
