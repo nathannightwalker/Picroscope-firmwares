@@ -244,6 +244,8 @@ void loop() {
             shut_down_everything();
         }
 
+
+//new adjustment system begins here
         if((count2 - count > 8) || (count2 - count < -8)){
 
                 boolean M1Correct = false;
