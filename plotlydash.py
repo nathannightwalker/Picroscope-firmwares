@@ -4,8 +4,10 @@ app = Dash(__name__)
 
 app.layout = html.Div([
 
+    #first line (only contains up buttons and doesnt need its own div) *note margin
     html.Button('UP', id='btn-up', n_clicks=0, style={'width': '5%', 'display': 'inline-block', 'vertical-align': 'middle', 'margin-left': '2.5vw'}),
 
+    #second line needs own div, here I put two buttons (needs new div for new line of features)
     html.Div(
         children = [
             html.Button('LEFT', id='btn-left', n_clicks=0, style={'width': '5%', 'display': 'inline-block', 'vertical-align': 'middle', 'margin-left': '0vw'}),
@@ -13,10 +15,12 @@ app.layout = html.Div([
         ]
     ),
 
+    #third line needs own div too
     html.Div(
         html.Button('DOWN', id='btn-down', n_clicks=0, style={'width': '5%', 'display': 'inline-block', 'vertical-align': 'top', 'margin-left': '2.5vw'}),
     ),
 
+    #call back  print line
     html.Div(id='container-button-timestamp')
 ])
 
