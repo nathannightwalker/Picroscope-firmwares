@@ -7,7 +7,6 @@ from dash import dcc
 from dash import html
 
 app = dash.Dash()
-app.css.append_css({'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'})
 
 app.layout = html.Div(
 
