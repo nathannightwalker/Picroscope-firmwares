@@ -39,6 +39,9 @@ app.layout = html.Div(
             inline=True
         ),
         
+        html.Div(
+            html.Button('YES', id='btn-btn', n_clicks=0)),
+        
         html.Div(id='on')
 	]
     
@@ -46,12 +49,13 @@ app.layout = html.Div(
 
 @app.callback(
 	Output('on', 'children'),
-	[Input('biglist1', 'value'),
-     Input('biglist2', 'value'),
-     Input('biglist3', 'value'),
-     Input('biglist4', 'value'),]
+    Input('btn-btn', 'n_clicks'),
+	State('biglist1', 'value'),
+    State('biglist2', 'value'),
+    State('biglist3', 'value'),
+    State('biglist4', 'value'),
 )
-def update_on(value1, value2, value3, value4):
+def update_on(clicked, value1, value2, value3, value4):
 
     a = value1
     b = value2
